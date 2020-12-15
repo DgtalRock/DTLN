@@ -23,7 +23,7 @@ import librosa
 import numpy as np
 import os
 import argparse
-from DTLN_model import DTLN_model
+from DTLN.DTLN_model import DTLN_model
 
 
 
@@ -100,26 +100,39 @@ def process_folder(model, folder_name, new_folder_name):
            
 
 
-if __name__ == '__main__':
-    # arguement parser for running directly from the command line
-    parser = argparse.ArgumentParser(description='data evaluation')
-    parser.add_argument('--in_folder', '-i',
-                        help='folder with input files')
-    parser.add_argument('--out_folder', '-o',
-                        help='target folder for processed files')
-    parser.add_argument('--model', '-m',
-                        help='weights of the enhancement model in .h5 format')
-    args = parser.parse_args()
-    # determine type of model
-    if args.model.find('_norm_') != -1:
-        norm_stft = True
-    else:
-        norm_stft = False
-    # create class instance
-    modelClass = DTLN_model();
+# if __name__ == '__main__':
+#     # arguement parser for running directly from the command line
+#     parser = argparse.ArgumentParser(description='data evaluation')
+#     parser.add_argument('--in_folder', '-i',
+#                         help='folder with input files')
+#     parser.add_argument('--out_folder', '-o',
+#                         help='target folder for processed files')
+#     parser.add_argument('--model', '-m',
+#                         help='weights of the enhancement model in .h5 format')
+#     args = parser.parse_args()
+#     # determine type of model
+#     if args.model.find('_norm_') != -1:
+#         norm_stft = True
+#     else:
+#         norm_stft = False
+#     # create class instance
+#     modelClass = DTLN_model();
+#     # build the model in default configuration
+#     modelClass.build_DTLN_model(norm_stft=norm_stft)
+#     # load weights of the .h5 file
+#     modelClass.model.load_weights(args.model)
+#     # process the folder
+#     process_folder(modelClass.model, args.in_folder, args.out_folder)
+
+
+def DTLNrunner(in_folder, out_folder, model, norm_stft = False):
+
+    modelClass = DTLN_model()
     # build the model in default configuration
     modelClass.build_DTLN_model(norm_stft=norm_stft)
     # load weights of the .h5 file
-    modelClass.model.load_weights(args.model)
+    modelClass.model.load_weights(model)
     # process the folder
-    process_folder(modelClass.model, args.in_folder, args.out_folder)
+    process_folder(modelClass.model, in_folder, out_folder)
+    return
+    
